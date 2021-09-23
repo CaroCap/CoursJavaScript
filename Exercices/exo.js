@@ -268,9 +268,13 @@ function DiffHeure(heuresFin, minutesFin, secondesFin, emplacement){
         heureFin -= 1
     }
     let heure_mnt = heuresFin - heures;
-    if (heure_mnt < 10) heure_mnt = '0'+heure_mnt   
-    if (minutes_mnt < 10) minutes_mnt = '0'+minutes_mnt     
-    if (sec_mnt < 10) sec_mnt = '0'+sec_mnt     
+    if (heure_mnt < 10) heure_mnt = '0'+heure_mnt;   
+    if (minutes_mnt < 10) minutes_mnt = '0'+minutes_mnt;     
+    if (sec_mnt < 10) sec_mnt = '0'+sec_mnt;
+    // if(sec_mnt==60){
+    //     sec_mnt = '00';
+    // }
+
     let temps_restant = `${heure_mnt.toString()}:${minutes_mnt.toString()}:${sec_mnt.toString()}`;
     // emplacement.innerText = temps_restant;
 
