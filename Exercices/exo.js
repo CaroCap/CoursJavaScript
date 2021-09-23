@@ -184,58 +184,58 @@
 /**
  * ? EX 10
  */
-function heure(){
-    let today = new Date();
-    let heures = today.getHours();
-    let minutes = today.getMinutes();
-    if (minutes < 10) minutes = "0"+minutes;
-    let secondes = today.getSeconds();
-    if (secondes < 10) secondes = "0"+secondes;
-    let heure_mnt = `${heures}:${minutes}:${secondes}`.toString();
-    // let heure_mnt = today.getHours().toString() + ":" + today.getMinutes().toString() + ":" +today.getSeconds().toString();
-    return heure_mnt;
-};
+// function heure(){
+//     let today = new Date();
+//     let heures = today.getHours();
+//     let minutes = today.getMinutes();
+//     if (minutes < 10) minutes = "0"+minutes;
+//     let secondes = today.getSeconds();
+//     if (secondes < 10) secondes = "0"+secondes;
+//     let heure_mnt = `${heures}:${minutes}:${secondes}`.toString();
+//     // let heure_mnt = today.getHours().toString() + ":" + today.getMinutes().toString() + ":" +today.getSeconds().toString();
+//     return heure_mnt;
+// };
 
-function jour(date){
-    let today = date;
-    let weekDayNames = ["Dimanche", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi"];
-    let monthNames = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"]
-    let date_ajd = `${weekDayNames[today.getDay()]} ${today.getDate()} ${monthNames[today.getMonth()]}`;
-    return date_ajd;
-}
+// function jour(date){
+//     let today = date;
+//     let weekDayNames = ["Dimanche", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi"];
+//     let monthNames = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"]
+//     let date_ajd = `${weekDayNames[today.getDay()]} ${today.getDate()} ${monthNames[today.getMonth()]}`;
+//     return date_ajd;
+// }
 
-function heure_body(){
-    let today = new Date();
-    let heures = today.getHours();
-    let minutes = today.getMinutes();
-    if (minutes < 10) minutes = "0"+minutes;
-    let secondes = today.getSeconds();
-    if (secondes < 10) secondes = "0"+secondes;
-    let heure_mnt = `${heures}:${minutes}:${secondes}`.toString();
-    titre2.innerHTML = heure_mnt;
-};
+// function heure_body(){
+//     let today = new Date();
+//     let heures = today.getHours();
+//     let minutes = today.getMinutes();
+//     if (minutes < 10) minutes = "0"+minutes;
+//     let secondes = today.getSeconds();
+//     if (secondes < 10) secondes = "0"+secondes;
+//     let heure_mnt = `${heures}:${minutes}:${secondes}`.toString();
+//     titre2.innerHTML = heure_mnt;
+// };
 
-function chgmt_color(){
-    if ((document.querySelector('h1').getAttribute('class')) === 'impair') {
-        document.querySelector('h1').setAttribute('class','pair')
-    }
-    else document.querySelector('h1').setAttribute('class','impair')
-}
+// function chgmt_color(){
+//     if ((document.querySelector('h1').getAttribute('class')) === 'impair') {
+//         document.querySelector('h1').setAttribute('class','pair')
+//     }
+//     else document.querySelector('h1').setAttribute('class','impair')
+// }
 
-let today = new Date();
+// let today = new Date();
 
-setTimeout(function(){document.querySelector('title').innerText = heure()}, 3500);
+// setTimeout(function(){document.querySelector('title').innerText = heure()}, 3500);
 
-let titre1 = document.createElement('h1');
-document.querySelector('body').appendChild(titre1);
-titre1.setAttribute('class','pair')
-titre1.innerHTML = jour(today)
+// let titre1 = document.createElement('h1');
+// document.querySelector('body').appendChild(titre1);
+// titre1.setAttribute('class','pair')
+// titre1.innerHTML = jour(today)
 
-let titre2 = document.createElement('h2');
-document.querySelector('body').appendChild(titre2);
-setInterval(heure_body,1000);
+// let titre2 = document.createElement('h2');
+// document.querySelector('body').appendChild(titre2);
+// setInterval(heure_body,1000);
 
-setInterval(chgmt_color, 1000);
+// setInterval(chgmt_color, 1000);
 
 /**
  * ? EX 11
@@ -243,61 +243,61 @@ setInterval(chgmt_color, 1000);
 // créer un prompt pour demander l'heure de fin
 // créer un décompte pour voir le temps restant jusqu'à la fin du cours
 
-// alert('A quelle heure finissent les cours ?')
+alert('A quelle heure finissent les cours ?')
 
-// function DiffHeure(heuresFin, minutesFin, secondesFin, emplacement){
-//     let today = new Date();
-//     let heures = today.getHours();
-//     let minutes = today.getMinutes();
-//     // if (minutes < 10) minutes = "0"+minutes;
-//     let secondes = today.getSeconds();
-//     let minutes_mnt;
-//     let sec_mnt;
-//     if (secondesFin - secondes > 0){
-//         sec_mnt = secondesFin - secondes;
-//     }
-//     else{
-//         sec_mnt = 60 - secondes
-//         minutesFin -= 1
-//     }
-//     if (minutesFin - minutes > 0){
-//         minutes_mnt = minutesFin - minutes;
-//     }
-//     else{
-//         minutes_mnt = 60 - minutes
-//         heureFin -= 1
-//     }
-//     let heure_mnt = heuresFin - heures;
-//     if (heure_mnt < 10) heure_mnt = '0'+heure_mnt   
-//     if (minutes_mnt < 10) minutes_mnt = '0'+minutes_mnt     
-//     if (sec_mnt < 10) sec_mnt = '0'+sec_mnt     
-//     let temps_restant = `${heure_mnt.toString()}:${minutes_mnt.toString()}:${sec_mnt.toString()}`;
-//     // emplacement.innerText = temps_restant;
+function DiffHeure(heuresFin, minutesFin, secondesFin, emplacement){
+    let today = new Date();
+    let heures = today.getHours();
+    let minutes = today.getMinutes();
+    // if (minutes < 10) minutes = "0"+minutes;
+    let secondes = today.getSeconds();
+    let minutes_mnt;
+    let sec_mnt;
+    if (secondesFin - secondes > 0){
+        sec_mnt = secondesFin - secondes;
+    }
+    else{
+        sec_mnt = 60 - secondes
+        minutesFin -= 1
+    }
+    if (minutesFin - minutes > 0){
+        minutes_mnt = minutesFin - minutes;
+    }
+    else{
+        minutes_mnt = 60 - minutes
+        heureFin -= 1
+    }
+    let heure_mnt = heuresFin - heures;
+    if (heure_mnt < 10) heure_mnt = '0'+heure_mnt   
+    if (minutes_mnt < 10) minutes_mnt = '0'+minutes_mnt     
+    if (sec_mnt < 10) sec_mnt = '0'+sec_mnt     
+    let temps_restant = `${heure_mnt.toString()}:${minutes_mnt.toString()}:${sec_mnt.toString()}`;
+    // emplacement.innerText = temps_restant;
 
-//     let title_time = document.querySelector('body');
-//     title_time.innerText = temps_restant;
-// };
+    let title_time = document.querySelector('body');
+    title_time.innerText = temps_restant;
+};
 
-// let heureFin;
-// let minFin;
-// let secFin;
-// let titre1 = document.createElement('h1');
+let heureFin;
+let minFin;
+let secFin;
+let titre1 = document.createElement('h1');
 
-// do {
-//     heureFin = parseInt(prompt('Heures (0 - 23 heures)'));
-//     if (heureFin < 10) heureFin = '0'+heureFin   
-// } while (isNaN(heureFin) || heureFin < 0 || heureFin > 23);
-// do {
-//     minFin = parseInt(prompt('Minutes (0 - 59 minutes)'));  
-//     if (minFin < 10) minFin = '0'+minFin     
-// } while (isNaN(minFin) || minFin < 0 || minFin > 59);
-// do {
-//     secFin = parseInt(prompt('Secondes (0 - 59 secondes)'));  
-//     if (secFin < 10) secFin = '0'+secFin     
-// } while (isNaN(secFin) || secFin < 0 || secFin > 59);
+do {
+    heureFin = parseInt(prompt('Heures (0 - 23 heures)'));
+    if (heureFin < 10) heureFin = '0'+heureFin   
+} while (isNaN(heureFin) || heureFin < 0 || heureFin > 23);
+do {
+    minFin = parseInt(prompt('Minutes (0 - 59 minutes)'));  
+    if (minFin < 10) minFin = '0'+minFin     
+} while (isNaN(minFin) || minFin < 0 || minFin > 59);
+do {
+    secFin = parseInt(prompt('Secondes (0 - 59 secondes)'));  
+    if (secFin < 10) secFin = '0'+secFin     
+} while (isNaN(secFin) || secFin < 0 || secFin > 59);
 
-// console.log(`Les Cours finissent à ${heureFin}:${minFin}:${secFin}`)
+console.log(`Les Cours finissent à ${heureFin}:${minFin}:${secFin}`)
 
-// setInterval(function(){
-//     DiffHeure(heureFin, minFin, secFin, titre1)},
-//     1000);
+setInterval(function(){
+    DiffHeure(heureFin, minFin, secFin, titre1)},
+    1000);

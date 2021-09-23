@@ -9,31 +9,30 @@
 
 function DiffHeure(heuresFin, minutesFin, secondesFin, emplacement){
     let today = new Date();
-    let heures = today.getHours();
-    let minutes = today.getMinutes();
-    // if (minutes < 10) minutes = "0"+minutes;
-    let secondes = today.getSeconds();
-    let minutes_mnt;
-    let sec_mnt;
-    if (secondesFin - secondes > 0){
-        sec_mnt = secondesFin - secondes;
+    let heuresMnt = today.getHours();
+    let minutesMnt = today.getMinutes();
+    let secondesMnt = today.getSeconds();
+    let minutes_restantes;
+    let sec_restantes;
+    if (secondesFin - secondesMnt > 0){
+        sec_restantes = secondesFin - secondesMnt;
     }
     else{
-        sec_mnt = 60 - secondes
+        sec_restantes = 60 - secondesMnt
         minutesFin -= 1
     }
-    if (minutesFin - minutes > 0){
-        minutes_mnt = minutesFin - minutes;
+    if (minutesFin - minutesMnt > 0){
+        minutes_restantes = minutesFin - minutesMnt;
     }
     else{
-        minutes_mnt = 60 - minutes
+        minutes_restantes = 60 - minutesMnt
         heureFin -= 1
     }
-    let heure_mnt = heuresFin - heures;
-    if (heure_mnt < 10) heure_mnt = '0'+heure_mnt   
-    if (minutes_mnt < 10) minutes_mnt = '0'+minutes_mnt     
-    if (sec_mnt < 10) sec_mnt = '0'+sec_mnt     
-    let temps_restant = `${heure_mnt.toString()}:${minutes_mnt.toString()}:${sec_mnt.toString()}`;
+    let heure_restantes = heuresFin - heuresMnt;
+    if (heure_restantes < 10) heure_restantes = '0'+heure_restantes   
+    if (minutes_restantes < 10) minutes_restantes = '0'+minutes_restantes     
+    if (sec_restantes < 10) sec_restantes = '0'+sec_restantes     
+    let temps_restant = `${heure_restantes.toString()}:${minutes_restantes.toString()}:${sec_restantes.toString()}`;
     // emplacement.innerText = temps_restant;
 
     let title_time = document.querySelector('#chrono');
@@ -64,5 +63,5 @@ let titre1 = document.createElement('h1');
 
 
 setInterval(function(){
-    DiffHeure(16, 45, 00, titre1)},
+    DiffHeure(13, 25, 00, titre1)},
     1000);
