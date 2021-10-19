@@ -9,7 +9,7 @@ let essais = nbreEssai;
 placeEssai = document.getElementById("essai");
 placeEssai.innerText = essais;
 
-// CODE ORDI
+// CREATION CODE ORDI
 function creationCodeOrdi(longueurCode, nbrePossibiliteCode) { 
     codeOrdi = [];
     for (let index = 0; index < longueurCode; index++) {
@@ -74,7 +74,7 @@ boutonJouer.addEventListener("click", lancementPartie);
 let myVar;
 function lancementPartie(event) {
     // SHOWME
-    document.getElementById('plateauJeu').removeAttribute('hidden');
+    document.getElementById('Jeu').removeAttribute('hidden');
     
     // LANCEMENT TIMER
     myVar = setInterval(timer, 1000);
@@ -84,9 +84,21 @@ function lancementPartie(event) {
 
 }
 
-// SUBMIT PROPOSITION
+// SUBMIT PROPOSITION JOUEUR
+// Lancement Proposition si click sur input Submit
 let boutonSubmit = document.getElementById("submit");
 boutonSubmit.addEventListener("click", submitProposition);
+// Lancement Proposition si Enter dans input text
+let actionEnter = document.getElementById("codeJoueur");
+actionEnter.addEventListener("keyup", function(e){
+    if(e.keyCode === 13){
+        e.preventDefault();
+        // alert("test");
+        // console.log("test");
+        document.getElementById("submit").click();
+        }
+});
+
 let reponseVictoire;
 let placeReponse = document.getElementById("reponseOrdi");
 let placeResultat = document.getElementById("resultat");
@@ -96,14 +108,15 @@ function submitProposition(event) {
     let codeJoueurTableau = [];
     let placeProposition = document.getElementById("codeJoueur");
     let propositionSubmited = placeProposition.value;
-        for (let index = 0; index < propositionSubmited.length; index++) {
-            codeJoueurTableau[index] = parseInt(propositionSubmited[index]);
-        }
+    // Transformer proposition joueur texte en tableau chiffres
+    for (let index = 0; index < propositionSubmited.length; index++) {
+        codeJoueurTableau[index] = parseInt(propositionSubmited[index]);
+    }
 
-    //Validation 4 chiffres
+    //Validation 4 chiffres (pas plus ni moins de 4 caractères)
     if(codeJoueurTableau.length == 4){
         let validationCode;
-        //Validation chiffres 1 à 4
+        //Validation chiffres 1 à 4 (vérification nombre 1, 2, 3 ou 4 -> pas de lettre)
         for (let index = 0; index < codeJoueurTableau.length; index++) {
             if(codeJoueurTableau[index]>0 && codeJoueurTableau[index] < 5){
                 validationCode = true;
@@ -159,7 +172,7 @@ function submitProposition(event) {
         //Vider le champs texte
         placeMessageSubmit.innerHTML = "";
 
-        //Creation Div pour résultat proposition
+        //Creation Div pour ajouter résultat proposition
         let placeColonnePropositions = document.getElementsByClassName("colonnePropositions");
         let newDivLigne = document.createElement("div");
         newDivLigne.setAttribute("id","ligneProposition");
@@ -196,8 +209,11 @@ function submitProposition(event) {
 
         //cleaner le input code joueur
         document.getElementById("codeJoueur").value = "";
+        //replacer le curseur dans le input pour l'entrée suivante
+        document.getElementById("codeJoueur").focus();
     }
 
+    // Si pas 4 caractères
     else{
         placeMessageSubmit.innerHTML = "Merci d'indiquer 4 chiffres"
     }
@@ -215,17 +231,19 @@ function finPartie() {
 
     if (victoire == true) {
         reponseVictoire = "YOU WIN ! ";
-        placeReponse.innerText = "Congratulations";
+        reponseValidation = "Congratulations";
 
     }
     else{
         reponseVictoire = "YOU LOOSE ! ";
+        // Transformer Tableau code ordi en String
         codeOrdi=codeOrdi.toString();
         for (let index = 0; index < codeOrdi.length; index++) {
                 codeOrdi = codeOrdi.replace(",", " ");
         }
-        placeReponse.innerText = "Le code était : " + codeOrdi;
+        reponseValidation = "Le code était : " + codeOrdi;
 
     }
     placeResultat.innerText = reponseVictoire;
+    placeReponse.innerText = reponseValidation;
 }
