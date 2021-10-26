@@ -1,7 +1,7 @@
 //DEPART
 const nbreEssai = 12;
 const longueurCode = 4;
-const nbrePossibiliteCode = 4;
+const liste_couleurs = ["🔴","🟠","🟡","🟢","🔵","🟣","🟤"];
 let victoire = false;
 
 // ESSAIS RESTANTS
@@ -10,18 +10,22 @@ placeEssai = document.getElementById("essai");
 placeEssai.innerText = essais;
 
 // CREATION CODE ORDI
-function creationCodeOrdi(longueurCode, nbrePossibiliteCode) { 
-    codeOrdi = [];
+/**
+ * Fonction permettant de créer le code couleur aléatoire
+ * @param {Int} longueur_code
+ * @param {Array} liste_couleurs
+ */
+function creationCodeOrdi(longueurCode, liste_couleurs) { 
+    codeOrdi;
     for (let index = 0; index < longueurCode; index++) {
-        codeOrdi.push(Math.floor(Math.random()*nbrePossibiliteCode)+1); 
+        index_aleatoire = Math.floor(Math.random()*liste_couleurs.length);
+        codeOrdi += (liste_couleurs[index_aleatoire]);
     }
     return codeOrdi;
 }
 
-let codeOrdi = [];
-codeOrdi = creationCodeOrdi(longueurCode, nbrePossibiliteCode)
-
-// console.log(codeOrdi) // ! A SUPPRIMER 
+let codeOrdi = "";
+codeOrdi = creationCodeOrdi(longueurCode, liste_couleurs)
 
 
 // TIMER
@@ -60,12 +64,45 @@ function timer()
         }
     }
 
+    //Affichage Timer
     placeTimer.innerHTML = `${strHeure}:${strMinutes}:${strSecondes}`;
 
+    //Fin du Timer
     if(heures==0 && minutes==0 && secondes==-1){
         document.getElementById("timer").setAttribute('class','texteRouge');
         finPartie();
     }
+}
+
+// APPARITION PROPOSITION COULEURS
+let newDivCouleur;
+for (let index = 0; index < liste_couleurs.length; index++) {
+    newDivCouleur = document.createElement("div");
+    newDivCouleur.setAttribute("class","couleur hover");
+    newDivCouleur.innerHTML = liste_couleurs[index];
+    document.getElementById("choixCouleurs").appendChild(newDivCouleur);    
+}
+
+
+
+//CHOIX COULEURS JOUEUR
+let choixCouleur = document.getElementsByClassName('couleur');
+for (let indexCouleur = 0; indexCouleur < choixCouleur.length; indexCouleur++) {
+    choixCouleur[indexCouleur].addEventListener("click", pickColor);
+}
+
+function pickColor(event){
+    event.preventDefault();
+    let colorPicked = event.currentTarget.innerText;
+    for (let index = 0; index < liste_couleurs.length; index++) {
+        if(document.getElementById('codeJoueur').value.length<8){
+            if(colorPicked == liste_couleurs[index]){
+                document.getElementById('codeJoueur').value += (liste_couleurs[index]);
+            }
+        }      
+    }
+    //replacer le curseur dans le input pour l'entrée suivante
+    document.getElementById("codeJoueur").focus();
 }
 
 // BOUTON JOUER -> LANCEMENT PARTIE (Showme, Timer)
@@ -81,7 +118,6 @@ function lancementPartie(event) {
 
     // FAIRE DISPARAITRE BOUTON JOUER
     document.getElementById('play').setAttribute('hidden', '');
-
 }
 
 // SUBMIT PROPOSITION JOUEUR
@@ -93,11 +129,19 @@ let actionEnter = document.getElementById("codeJoueur");
 actionEnter.addEventListener("keyup", function(e){
     if(e.keyCode === 13){
         e.preventDefault();
-        // alert("test");
-        // console.log("test");
         document.getElementById("submit").click();
         }
 });
+
+// DELETE PROPOSITION
+let boutonDelete = document.getElementById("delete");
+boutonDelete.addEventListener("click", deleteColor);
+
+function deleteColor(event){
+    event.preventDefault();
+    document.getElementById("codeJoueur").value = "";
+}
+
 
 let reponseVictoire;
 let placeReponse = document.getElementById("reponseOrdi");
@@ -108,40 +152,37 @@ function submitProposition(event) {
     let codeJoueurTableau = [];
     let placeProposition = document.getElementById("codeJoueur");
     let propositionSubmited = placeProposition.value;
-    // Transformer proposition joueur texte en tableau chiffres
-    for (let index = 0; index < propositionSubmited.length; index++) {
-        codeJoueurTableau[index] = parseInt(propositionSubmited[index]);
-    }
 
-    //Validation 4 chiffres (pas plus ni moins de 4 caractères)
-    if(codeJoueurTableau.length == 4){
-        let validationCode;
-        //Validation chiffres 1 à 4 (vérification nombre 1, 2, 3 ou 4 -> pas de lettre)
-        for (let index = 0; index < codeJoueurTableau.length; index++) {
-            if(codeJoueurTableau[index]>0 && codeJoueurTableau[index] < 5){
-                validationCode = true;
+    //Validation 4 couleurs (pas plus ni moins de 4)
+    if(propositionSubmited.length == longueurCode*2){
+
+        //CHECK CODES
+        let copieCodeJoueur = propositionSubmited.split("");
+        let copieCodeOrdi = codeOrdi.split("");
+
+        //SUPPRIMER CARACTÈRE "\uD83D" qui apparait à cause des emojis 
+        for (let index_user = 0; index_user < copieCodeJoueur.length; index_user++) {
+            if(copieCodeJoueur[index_user] == "\uD83D")
+            {
+                copieCodeJoueur[index_user] = -1;
             }
-            else{
-                validationCode = false;
-                placeMessageSubmit.innerHTML = "Merci d'utiliser des chiffres de 1 à 4"
-                return
+            if(copieCodeOrdi[index_user] == "\uD83D")
+            {
+                copieCodeOrdi[index_user] = -1;
             }
         }
 
         //CHECK BON PLACEMENT
-        let copieCodeJoueur = Array.from(codeJoueurTableau);
-        let copieCodeOrdi = Array.from(codeOrdi);
-
         let bonPlacement = 0;
         for (let index_user = 0; index_user < copieCodeJoueur.length; index_user++) {
-            if(copieCodeJoueur[index_user] == copieCodeOrdi[index_user])
+            if(copieCodeJoueur[index_user] !== -1 && copieCodeJoueur[index_user] == copieCodeOrdi[index_user])
             {
                 bonPlacement += 1;
                 copieCodeJoueur[index_user] = -1;
                 copieCodeOrdi[index_user] = -1;
             }
         }
-        if (bonPlacement == 4){
+        if (bonPlacement == longueurCode){
             victoire = true;
         }
 
@@ -150,8 +191,7 @@ function submitProposition(event) {
         for (let index_user = 0; index_user < copieCodeJoueur.length; index_user++) {
             for (let index_ordi = 0; index_ordi < copieCodeOrdi.length; index_ordi++) {
                 if ((copieCodeJoueur[index_user] == copieCodeOrdi[index_ordi])
-                && copieCodeJoueur[index_user] !== -1 
-                && copieCodeOrdi[index_ordi] !== -1) {
+                && copieCodeJoueur[index_user] !== -1) {
                     mauvaisePlace += 1;
                     copieCodeJoueur[index_user] = -1;
                     copieCodeOrdi[index_ordi] = -1;
@@ -162,14 +202,7 @@ function submitProposition(event) {
         //Conclusion Validation
         let validationReponse = "Vous avez " + bonPlacement + " pion(s) correctement placé(s) & " + mauvaisePlace + " pions au mauvais endroit.";
 
-
-        //Changer tableau code en string
-        codeJoueurString=codeJoueurTableau.toString();
-        for (let index = 0; index < codeJoueurString.length; index++) {
-            codeJoueurString = codeJoueurString.replace(",", " ");
-        }
-
-        //Vider le champs texte
+        //Vider le champs texte message erreur
         placeMessageSubmit.innerHTML = "";
 
         //Creation Div pour ajouter résultat proposition
@@ -185,7 +218,7 @@ function submitProposition(event) {
         document.getElementById("colonnePropositions").appendChild(newDivLigne);
 
         document.getElementById('ligneProposition').appendChild(newDivProposition);
-        newDivProposition.innerHTML = codeJoueurString;
+        newDivProposition.innerHTML = propositionSubmited;
         document.getElementById('ligneProposition').appendChild(newDivValidation);
         newDivValidation.innerHTML = validationReponse;        
         newDivLigne.setAttribute("id",""); // cleaner id pour prochaine proposition       
@@ -213,9 +246,9 @@ function submitProposition(event) {
         document.getElementById("codeJoueur").focus();
     }
 
-    // Si pas 4 caractères
+    // Si pas 4 couleurs
     else{
-        placeMessageSubmit.innerHTML = "Merci d'indiquer 4 chiffres"
+        placeMessageSubmit.innerHTML = "Merci de choisir 4 couleurs"
     }
 }
 
@@ -223,8 +256,25 @@ function submitProposition(event) {
 //FIN PARTIE         
 
 function finPartie() {
+    //empêcher l'encodage
+    document.getElementById("codeJoueur").setAttribute('disabled','');
+    //empêcher l'appuyage du bouton submit
     document.getElementById("submit").setAttribute("disabled","");
+    //enlever l'esthétique bouton de submit (boxshadow)
+    document.getElementById("submit").removeAttribute('class','hover');
+    //empêcher l'appuyage du bouton delete
+    document.getElementById("delete").setAttribute("disabled","");
+    //enlever l'esthétique bouton de delete (boxshadow)
+    document.getElementById("delete").removeAttribute('class','hover');
+    //faire disparaitre les essais restants
     document.getElementById("essaiRestant").innerHTML = "<br>";
+    //enlever events sur pions couleurs
+    let placeCouleur = document.getElementsByClassName('couleur hover')
+
+    for (let index = 0; index < liste_couleurs.length; index++) {
+        placeCouleur[0].removeEventListener("click", pickColor);
+        placeCouleur[0].removeAttribute("class", "couleur hover");
+    }
 
     //Arrêter Timer
     clearInterval(myVar);
@@ -236,13 +286,7 @@ function finPartie() {
     }
     else{
         reponseVictoire = "YOU LOOSE ! ";
-        // Transformer Tableau code ordi en String
-        codeOrdi=codeOrdi.toString();
-        for (let index = 0; index < codeOrdi.length; index++) {
-                codeOrdi = codeOrdi.replace(",", " ");
-        }
         reponseValidation = "Le code était : " + codeOrdi;
-
     }
     placeResultat.innerText = reponseVictoire;
     placeReponse.innerText = reponseValidation;

@@ -60,11 +60,15 @@ function timer()
         }
     }
 
+    //Affichage Timer
     placeTimer.innerHTML = `${strHeure}:${strMinutes}:${strSecondes}`;
 
+    //Fin du Timer
     if(heures==0 && minutes==0 && secondes==-1){
         document.getElementById("timer").setAttribute('class','texteRouge');
         finPartie();
+        document.getElementById("codeJoueur").setAttribute('disabled','')
+        document.getElementById("submit").removeAttribute('class','hover')
     }
 }
 
@@ -74,7 +78,7 @@ boutonJouer.addEventListener("click", lancementPartie);
 let myVar;
 function lancementPartie(event) {
     // SHOWME
-    document.getElementById('plateauJeu').removeAttribute('hidden');
+    document.getElementById('Jeu').removeAttribute('hidden');
     
     // LANCEMENT TIMER
     myVar = setInterval(timer, 1000);
