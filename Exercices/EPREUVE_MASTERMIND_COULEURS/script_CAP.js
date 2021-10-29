@@ -1,15 +1,41 @@
-//DEPART
+// DEPART
 const nbreEssai = 12;
 const longueurCode = 4;
 const liste_couleurs = ["🔴","🟠","🟡","🟢","🔵","🟣","🟤"];
-let victoire = false;
+const heuresStart = 0;
+const minutesStart = 6;
+const secondesStart = 0;
+const victoireStart = false;
 
-// ESSAIS RESTANTS
-let essais = nbreEssai;
-placeEssai = document.getElementById("essai");
-placeEssai.innerText = essais;
+// VARIABLES
+let codeOrdi;
+let heures;
+let minutes;
+let secondes;
+let strHeure;
+let strMinutes;
+let strSecondes;
+let newDivCouleur;
+let choixCouleur;
+let reponseVictoire;
+let essais;
+let placeEssai;
+let myVar;
+let victoire;
 
-// CREATION CODE ORDI
+// EMPLACEMENT DOM
+let placeTimer = document.getElementById("timer");
+let placeReponse = document.getElementById("reponseOrdi");
+let placeResultat = document.getElementById("resultat");
+let placeBoutonJouer = document.getElementById('play');
+let placeBoutonSubmit = document.getElementById("submit");
+let placeActionEnter = document.getElementById("codeJoueur");
+let placeBoutonDelete = document.getElementById("delete");
+
+
+
+// ! FONCTIONS
+// ? CREATION CODE ORDI
 /**
  * Fonction permettant de créer le code couleur aléatoire
  * @param {Int} longueur_code
@@ -24,17 +50,69 @@ function creationCodeOrdi(longueurCode, liste_couleurs) {
     return codeOrdi;
 }
 
-let codeOrdi = "";
-codeOrdi = creationCodeOrdi(longueurCode, liste_couleurs)
+// ? INITIALISATION PARTIE
+function InitialisationJeu(){
 
+    victoire = false;
+    // CREATION CODE A DEVINER
+    codeOrdi = "";
+    codeOrdi = creationCodeOrdi(longueurCode, liste_couleurs);
 
-// TIMER
-let placeTimer = document.getElementById("timer");
-let heures = 0;
-let minutes = 6;
-let secondes = 0;
-placeTimer.innerHTML = `0${heures}:0${minutes}:0${secondes}`;
+    // INITIALISATION TIMER
+    heures = heuresStart;
+    minutes = minutesStart;
+    secondes = secondesStart;
+    if(heures<10){        
+        if(heures<0){
+            strHeure='00';
+        }else{
+        strHeure='0'+ heures;
+        }
+    }
+    if(minutes<10){
+        strMinutes=`0${minutes}`;
+    }
+    else{
+        strMinutes= `${minutes}`;
+    }
+    strSecondes=`${secondes}`;
+    if(secondes<10){        
+        if(secondes<0){
+            strSecondes='00';
+        }else{
+        strSecondes='0'+ secondes;
+        }
+    }
+    placeTimer.innerHTML = `${strHeure}:${strMinutes}:${strSecondes}`;
 
+    // INITIALISATION ESSAIS 
+    essais = nbreEssai;
+    placeEssai = document.getElementById("essai");
+    placeEssai.innerText = essais;
+
+    // APPARITION PROPOSITION COULEURS
+    document.getElementById("choixCouleurs").innerHTML ="<span>Choisis 4 couleurs :  </span>";
+    for (let index = 0; index < liste_couleurs.length; index++) {
+        newDivCouleur = document.createElement("div");
+        newDivCouleur.setAttribute("class","couleur hover");
+        newDivCouleur.innerHTML = liste_couleurs[index];
+        document.getElementById("choixCouleurs").appendChild(newDivCouleur);    
+    }
+
+    //CHOIX COULEURS JOUEUR
+    choixCouleur = document.getElementsByClassName('couleur');
+    for (let indexCouleur = 0; indexCouleur < choixCouleur.length; indexCouleur++) {
+        choixCouleur[indexCouleur].addEventListener("click", pickColor);
+    }
+
+    // MISE AU PROPRE PLATEAU JEU (Suppression anciennes propositionset info victoire/défaite)
+    placeResultat.innerText = "Résultat";
+    placeReponse.innerText = "Propositions Joueur";
+
+    document.getElementById("colonnePropositions").innerText = "";
+}
+
+// ? TIMER
 function timer()
 {
     // Calcul
@@ -46,8 +124,8 @@ function timer()
     }
 
     //Affichage
-    let strHeure = heures<10?`0${heures}`:heures;
-    let strMinutes;    
+    strHeure = heures<10?`0${heures}`:heures;
+    strMinutes;    
     if(minutes<10){
         strMinutes=`0${minutes}`;
     }
@@ -55,7 +133,7 @@ function timer()
         strMinutes= `${minutes}`;
     }
 
-    let strSecondes=`${secondes}`;
+    strSecondes=`${secondes}`;
     if(secondes<10){        
         if(secondes<0){
             strSecondes='00';
@@ -74,23 +152,6 @@ function timer()
     }
 }
 
-// APPARITION PROPOSITION COULEURS
-let newDivCouleur;
-for (let index = 0; index < liste_couleurs.length; index++) {
-    newDivCouleur = document.createElement("div");
-    newDivCouleur.setAttribute("class","couleur hover");
-    newDivCouleur.innerHTML = liste_couleurs[index];
-    document.getElementById("choixCouleurs").appendChild(newDivCouleur);    
-}
-
-
-
-//CHOIX COULEURS JOUEUR
-let choixCouleur = document.getElementsByClassName('couleur');
-for (let indexCouleur = 0; indexCouleur < choixCouleur.length; indexCouleur++) {
-    choixCouleur[indexCouleur].addEventListener("click", pickColor);
-}
-
 function pickColor(event){
     event.preventDefault();
     let colorPicked = event.currentTarget.innerText;
@@ -105,10 +166,9 @@ function pickColor(event){
     document.getElementById("codeJoueur").focus();
 }
 
-// BOUTON JOUER -> LANCEMENT PARTIE (Showme, Timer)
-let boutonJouer = document.getElementById('play');
-boutonJouer.addEventListener("click", lancementPartie);
-let myVar;
+// ! EVENTS 
+// ? BOUTON JOUER -> LANCEMENT PARTIE (Showme, Timer)
+placeBoutonJouer.addEventListener("click", lancementPartie);
 function lancementPartie(event) {
     // SHOWME
     document.getElementById('Jeu').removeAttribute('hidden');
@@ -120,32 +180,24 @@ function lancementPartie(event) {
     document.getElementById('play').setAttribute('hidden', '');
 }
 
-// SUBMIT PROPOSITION JOUEUR
+// ? SUBMIT PROPOSITION JOUEUR
 // Lancement Proposition si click sur input Submit
-let boutonSubmit = document.getElementById("submit");
-boutonSubmit.addEventListener("click", submitProposition);
+placeBoutonSubmit.addEventListener("click", submitProposition);
 // Lancement Proposition si Enter dans input text
-let actionEnter = document.getElementById("codeJoueur");
-actionEnter.addEventListener("keyup", function(e){
+placeActionEnter.addEventListener("keyup", function(e){
     if(e.keyCode === 13){
         e.preventDefault();
         document.getElementById("submit").click();
         }
 });
 
-// DELETE PROPOSITION
-let boutonDelete = document.getElementById("delete");
-boutonDelete.addEventListener("click", deleteColor);
+// ? DELETE PROPOSITION
+placeBoutonDelete.addEventListener("click", deleteColor);
 
 function deleteColor(event){
     event.preventDefault();
     document.getElementById("codeJoueur").value = "";
 }
-
-
-let reponseVictoire;
-let placeReponse = document.getElementById("reponseOrdi");
-let placeResultat = document.getElementById("resultat");
 
 function submitProposition(event) {
     let placeMessageSubmit = document.getElementById("messageSubmit");
@@ -253,8 +305,7 @@ function submitProposition(event) {
 }
 
 
-//FIN PARTIE         
-
+// ? FIN PARTIE         
 function finPartie() {
     //empêcher l'encodage
     document.getElementById("codeJoueur").setAttribute('disabled','');
@@ -267,7 +318,7 @@ function finPartie() {
     //enlever l'esthétique bouton de delete (boxshadow)
     document.getElementById("delete").removeAttribute('class','hover');
     //faire disparaitre les essais restants
-    document.getElementById("essaiRestant").innerHTML = "<br>";
+    document.getElementById("essaiRestant").setAttribute('hidden', '');
     //enlever events sur pions couleurs
     let placeCouleur = document.getElementsByClassName('couleur hover')
 
@@ -290,4 +341,43 @@ function finPartie() {
     }
     placeResultat.innerText = reponseVictoire;
     placeReponse.innerText = reponseValidation;
+
+    document.getElementById('Replay').removeAttribute('hidden');
 }
+
+// BOUTON REJOUER -> Réinitialiser jeu
+let boutonRejouer = document.getElementById('Replay');
+boutonRejouer.addEventListener("click", newGame);
+
+function newGame(event) {
+
+    //REINITIALISATION VARIABLES
+    InitialisationJeu();
+    document.getElementById("timer").removeAttribute('class','texteRouge');
+    //Remettre l'encodage
+    document.getElementById("codeJoueur").removeAttribute('disabled');
+    //Remettre l'appuyage du bouton submit
+    document.getElementById("submit").removeAttribute("disabled");
+    //Remettre l'esthétique bouton de submit (boxshadow)
+    document.getElementById("submit").setAttribute('class','hover');
+    //Remettre l'appuyage du bouton delete
+    document.getElementById("delete").removeAttribute("disabled");
+    //Remettre l'esthétique bouton de delete (boxshadow)
+    document.getElementById("delete").setAttribute('class','hover');
+    //faire Apparaitre les essais restants
+    placeEssai = document.getElementById("essai");
+    placeEssai.innerText = essais;
+
+    // LANCEMENT TIMER
+    myVar = setInterval(timer, 1000);
+
+    // FAIRE DISPARAITRE BOUTON REJOUER
+    document.getElementById('Replay').setAttribute('hidden', '');
+}
+
+// INITIALISATION JEU
+InitialisationJeu(); 
+
+
+
+

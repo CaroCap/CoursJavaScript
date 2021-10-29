@@ -15,33 +15,38 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@900&display=swap" rel="stylesheet">
 </head>
-<body>
 
+<body>
 <div class="contenuGeneral">
-    <div class="hautPage">
+
+    <header class="hautPage">
         <!-- TIMER -->
-        <div class="temps">
+        <article class="temps">
             <div class="timer">
                 <!-- <span >Temps restant : </span> -->
                 <div id='timer'></div>
             </div>
-        </div>
+        </article>
 
-        <!-- TITRE -->
-        
-        <h1 class="titre">Épreuve MASTERMIND</h1>
-        
-    </div>
+        <!-- TITRE -->      
+        <h1 class="titre">Épreuve MASTERMIND</h1>      
+    </header>
+    
 
     <!-- BOUTON JOUER -->
-    <div class="accueil">
-        <input class = "shadow hover" type="button" value="Jouer" id="play">    
-    </div>
+    <section class="boutonsJouer">
+        <div class="Rejouer">
+            <input class = "shadow hover" type="button" value="Rejouer" id="Replay" hidden>    
+        </div>
+        
+        <div class="accueil">
+            <input class = "shadow hover" type="button" value="Jouer" id="play">    
+        </div>
+    </section>
 
     <!-- PLATEAU JEU -->
-    <div id="Jeu" hidden>
+    <section id="Jeu" hidden>
         <div class="choixCouleurs" id="choixCouleurs">
-            <span>Choisis 4 couleurs :  </span> 
         </div>
         <br>
         <div class="submition">
@@ -57,15 +62,15 @@
 
         <div class="plateauJeu">
         <div class="finJeu">
-            <div id="resultat">Résultat</div>
-            <div id="reponseOrdi"> Propositions Joueur</div>
+            <div id="resultat"></div>
+            <div id="reponseOrdi"></div>
         </div>
             
         <div class="colonnePropositions" id="colonnePropositions">
         </div>
             
         </div>
-    </div>
+    </section>
 
 </div>    
 
